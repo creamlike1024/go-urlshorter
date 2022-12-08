@@ -63,7 +63,9 @@ func manageHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		r.ParseForm()
 		if r.Form["password"][0] == os.Getenv("PASSWORD") {
-			if r.Form["url"][0] != "" && r.Form["path"][0] == "" {
+			if r.Form["url"][0] == "" && r.Form["path"][0] == "" {
+				fmt.Fprintf(w, "你没有填写要添加的 Url 或要删除的 Path")
+			} else if r.Form["url"][0] != "" && r.Form["path"][0] == "" {
 				addPathHandler(w, r, r.Form["url"][0])
 			} else if r.Form["url"][0] == "" && r.Form["path"][0] != "" {
 				delPathHandler(w, r, r.Form["path"][0])
